@@ -1,7 +1,7 @@
 Proxmox tips:
 Binding/mount storage
 Add this line to LXC.conf in /etc/pve/lxc/
-mp<1,2,3,4...>: /host/path/to/folder, mp=/lxc/path/to/folder/
+mp<1,2,3,4...>: /host/path/to/folder,mp=/lxc/path/to/folder/
 Must first add storage in Proxmox GUI. Datacenter->Storage->Add
 
 Permissions:
