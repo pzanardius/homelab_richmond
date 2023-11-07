@@ -1,0 +1,16 @@
+Proxmox tips:
+Binding/mount storage
+Add this line to LXC.conf in /etc/pve/lxc/
+mp<1,2,3,4...>: /host/path/to/folder, mp=/lxc/path/to/folder/
+Must first add storage in Proxmox GUI. Datacenter->Storage->Add
+
+Permissions:
+Must create group that shares PGID amongst all LXCs to be able to share a folder
+commands: chmod, chown, ls -l, groupadd, useradd
+rwm = read, write, modify
+chmod 777 path/folder // give full access to everyone
+
+Docker compose tips
+To run container network through another container network, use: 
+network_mode: "name of container service"
+useful for running through a VPN or firewall
