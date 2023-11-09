@@ -1,0 +1,9 @@
+Installing into the SSD drive, going to use nvme drive as cache maybe?
+To do:
+    Install TrueNAS VM
+    PCI Passthrough for H330 controller
+    Add drives to TrueNAS (Mirror)
+    Use extra drive as separate backup through Proxmox
+    Set-up cluster with laptop
+    Make backups of every config
+    
