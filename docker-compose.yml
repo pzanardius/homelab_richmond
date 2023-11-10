@@ -1,48 +1,29 @@
 version: '3.8'
 services:
-  gluetun:
-    image: qmcgaw/gluetun
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    ports:
-      - 8888:8888/tcp # HTTP proxy
-      - 8388:8388/tcp # Shadowsocks
-      - 8388:8388/udp # Shadowsocks
-      - 6881:6881 # qbit
-      - 8085:8085 # qbit
-      - 6881:6881/udp #qbit
-    volumes:
-      - /media/gluetun:/gluetun
-    environment:
-      - VPN_SERVICE_PROVIDER=Nordvpn
-      - VPN_TYPE=openvpn
-      - OPENVPN_USER=XQ5dFW8oqtPaApNLfhyvKJhy
-      - OPENVPN_PASSWORD=hZh97o5tLUZ7dVobiKgdjUG1
-      - TZ=Americas/Los_Angeles
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
       - PUID=1001
       - PGID=1001
-      - TZ=Americas/Los_Angeles
+      - TZ=America/Los_Angeles
       - WEBUI_PORT=8085
+    ports:
+      - 8085:8085
     volumes:
       - /media/qbittorrent/config:/config
       - /data/torrents/:/data/torrents
-    network_mode: "service:gluetun"
     restart: unless-stopped
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
     ports:
       - 7777:7777
+      - 8080:8080
     environment:
       - PUID=1001
       - PGID=1001
-      - TZ=Americas/Los_Angeles
+      - TZ=America/Los_Angeles
     volumes:
       - /media/sabnzbd:/config
       - /data/usenet/complete:/data/usenet/complete
@@ -66,7 +47,7 @@ services:
     environment:
       - PUID=1001
       - PGID=1001
-      - TZ=Americas/Los_Angeles
+      - TZ=America/Los_Angeles
     volumes:
       - /data/prowlarr/config:/config
     ports:
@@ -78,7 +59,7 @@ services:
     environment:
       - PUID=1001
       - PGID=1001
-      - TZ=Americas/Los_Angeles
+      - TZ=America/Los_Angeles
     volumes:
       - /data/radarr/config:/config
       - /data:/data
@@ -91,7 +72,7 @@ services:
     environment:
       - PUID=1001
       - PGID=1001
-      - TZ=Americas/Los_Angeles
+      - TZ=America/Los_Angeles
     volumes:
       - /data/sonarr/config:/config
       - /data:/data
@@ -109,65 +90,3 @@ services:
     volumes:
       - /media/nginx:/data
       - /data/nginx/letsencrypt:/etc/letsencrypt
-  lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
-    container_name: lidarr
-    environment:
-      - PUID=1001
-      - PGID=1001
-      - TZ=Americas/Los_Angeles
-    volumes:
-      - /data/lidarr/config:/config
-      - /data/:/data
-    ports:
-      - 8686:8686
-    restart: unless-stopped
-  mylar:
-    image: lscr.io/linuxserver/mylar3:latest
-    container_name: mylar
-    environment:
-      - PUID=1001
-      - PGID=1001
-    volumes:
-      - /data/mylar/config:/config
-      - /data/:/data
-    ports:
-      - 8090:8090
-    restart: unless-stopped
-  komga:
-    image: gotson/komga
-    container_name: komga
-    environment:
-      - PUID=1001
-      - PGID=1001
-      - TZ=Americas/Los_Angeles
-    volumes:
-      - /media/komga/config:/config
-      - /data/:/data/
-    ports:
-      - 25600:25600
-    restart: unless-stopped
-  navidrome:
-    image: deluan/navidrome:latest
-    environment:
-      - PUID=1001
-      - PGID=1001
-      - TZ=Americas/Los_Angeles
-    ports:
-      - "4533:4533"
-    restart: unless-stopped
-    volumes:
-      - "/media/navidrome/config:/config"
-      - "/data/:/music:ro"
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    environment:
-      PUID: 1001
-      PGID: 1001
-    ports:
-      - 3000:3000
-    volumes:
-      - /data/homepage/config:/app/config # Make sure your local config directory exists
-      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
-    restart: unless-stopped
